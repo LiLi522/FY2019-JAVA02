@@ -1,7 +1,6 @@
 package com.ll.com.ll.testIO;
 
 import java.io.*;
-
 public class TestFileOutputStream {
     public static void main(String[] args) {
         TestFileOutputStream t = new TestFileOutputStream();
