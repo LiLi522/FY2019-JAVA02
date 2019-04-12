@@ -46,7 +46,7 @@ public class AdminServiceImpl implements IAdminService {
 				if (password == null || password.equals("")) {//校验密码是否为空
 					return ServerResponse.creatResponseByFail(ConstEnum.PASSWORD_NOT_NULL.getType(), ConstEnum.PASSWORD_NOT_NULL.getDesc());
 				}else if (_password.equals(password)) {//密码和用户名都正确，登陆成功
-					return ServerResponse.creatResponseBySucess();
+					return ServerResponse.creatResponseBySucess(ConstEnum.LOGIN_SUCCES.getDesc(),admin);
 				}else {//校验用户名是否正确
 					return ServerResponse.creatResponseByFail(ConstEnum.PASSWORD_NOT_TRUE.getType(), ConstEnum.PASSWORD_NOT_TRUE.getDesc());
 				}

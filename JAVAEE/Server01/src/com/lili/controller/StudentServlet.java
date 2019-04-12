@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lili.common.ChoiseCourseEnum;
 import com.lili.common.ConstEnum;
 import com.lili.common.OperStudentEnum;
 import com.lili.common.ServerResponse;
@@ -37,9 +38,6 @@ public class StudentServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=utf-8");
-		
 		
 		PrintWriter pw = response.getWriter();
 		String operation = request.getParameter("operation");
@@ -61,7 +59,8 @@ public class StudentServlet extends HttpServlet {
 				int score = Integer.parseInt(request.getParameter("score"));
 				//获取电话
 				String phone = request.getParameter("phone");
-				ServerResponse<Student> serverresponse = iss.add(id, name, score, phone);
+				String password = request.getParameter("password");
+				ServerResponse<Student> serverresponse = iss.add(id, name, score, phone,password);
 				pw.write(serverresponse.objToJson());
 				pw.flush();
 				pw.close();

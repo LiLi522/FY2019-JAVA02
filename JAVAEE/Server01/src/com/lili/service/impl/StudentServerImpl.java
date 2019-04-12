@@ -1,7 +1,9 @@
 package com.lili.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,12 +14,13 @@ import com.lili.service.IStudentServer;
 
 public class StudentServerImpl implements IStudentServer {
 	private static StudentServerImpl studentserverimpl;
-	Map<Integer,Student> stus = new HashMap<Integer,Student>();
+	
+	
 	
 	private StudentServerImpl() {
-		stus.put(1, new Student(1,"三张",90,"111111"));
-		stus.put(2, new Student(2,"四李",90,"111111"));
-		stus.put(3, new Student(3,"五王",90,"111111"));
+		stus.put(1, new Student(1,"三张",90,"111111","123456"));
+		stus.put(2, new Student(2,"四李",90,"111111","123456"));
+		stus.put(3, new Student(3,"五王",90,"111111","123456"));
 	}
 	public static synchronized StudentServerImpl getInstance() {
 		if (studentserverimpl == null) {
@@ -28,7 +31,7 @@ public class StudentServerImpl implements IStudentServer {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ServerResponse<Student> add(int id, String name, int score, String phone) {
+	public ServerResponse<Student> add(int id, String name, int score, String phone,String password) {
 		// TODO Auto-generated method stub
 		String _id = String.valueOf(id);
 		String _score = String.valueOf(score);
@@ -44,7 +47,7 @@ public class StudentServerImpl implements IStudentServer {
 			if (isIdExist(id)) {//存在Id
 				return ServerResponse.creatResponseByFail(ConstEnum.ID_EXIST.getType(), ConstEnum.ID_EXIST.getDesc());
 			}else {
-				stus.put(id, new Student(id, name, score, phone));
+				stus.put(id, new Student(id, name, score, phone,password));
 				return ServerResponse.creatResponseBySucess();
 			}
 		}
@@ -85,6 +88,9 @@ public class StudentServerImpl implements IStudentServer {
 			}else if (choise.equals("phone")) {
 				stu.setPhone(value);
 				return ServerResponse.creatResponseBySucess("修改成功", stus.get(id));
+			}else if (choise.equals("password")) {
+				stu.setPassword(value);
+				return ServerResponse.creatResponseBySucess("修改成功", stus.get(id));
 			}else {
 				return ServerResponse.creatResponseByFail(90, "输入的属性不存在");
 			}
@@ -104,7 +110,24 @@ public class StudentServerImpl implements IStudentServer {
 			return ServerResponse.creatResponseByFail(ConstEnum.ID_NOT_EXIST.getType(), ConstEnum.ID_NOT_EXIST.getDesc());
 		}
 	}
-	
-	
-
+	@Override
+	public ServerResponse<Student> login(String name, String password) {
+		// TODO Auto-generated method stub
+		if (name == null || name.equals("")) {
+			return ServerResponse.creatResponseByFail(ConstEnum.USERNAME_NOT_NULL.getType(), ConstEnum.USERNAME_NOT_NULL.getDesc());
+		}else if (password == null || password.equals("")) {
+			return ServerResponse.creatResponseByFail(ConstEnum.PASSWORD_NOT_NULL.getType(), ConstEnum.PASSWORD_NOT_NULL.getDesc());
+		}else {
+			Iterator<Student> iterator = st.iterator();
+			while(iterator.hasNext()) {
+				Student s = iterator.next();
+				if (s.getName().equals(name)) {
+					if (s.getPassword().equals(password)) {
+						return ServerResponse.creatResponseBySucess("登录成功", s);
+					}
+				}
+			}
+		}
+		return ServerResponse.creatResponseByFail(ConstEnum.USER_PASSWD_NO_SAME.getType(), ConstEnum.USER_PASSWD_NO_SAME.getDesc());
+	}
 }

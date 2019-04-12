@@ -5,12 +5,14 @@ public class Student {
 	private String name;
 	private int score;
 	private String phone;
-	public Student(int id, String name, int score, String phone) {
+	private String password;
+	public Student(int id, String name, int score, String phone,String password) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.score = score;
 		this.phone = phone;
+		this.password = password;
 	}
 	public int getId() {
 		return id;
@@ -35,6 +37,13 @@ public class Student {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	@Override
 	public String toString() {

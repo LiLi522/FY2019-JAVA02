@@ -2,7 +2,9 @@ package com.lili.common;
 
 public enum OperationEnum {
 	ADMIN_LOGIN(1,"登录"),
-	ADMIN_REGISTER(2,"注册")
+	ADMIN_REGISTER(2,"注册"),
+	ADMIN_EXIT(3,"退出登录"),
+	ADMIN_LOGIN_NUM(4,"获取在线人数")
 	;
 	private int operation_type;
 	private String operation_desc;

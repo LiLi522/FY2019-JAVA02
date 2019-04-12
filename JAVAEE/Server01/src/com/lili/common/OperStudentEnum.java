@@ -5,7 +5,8 @@ public enum OperStudentEnum {
 	FINDALL(2,"查找全部学生信息"),
 	FINDBYID(3,"根据ID查找学生信息"),
 	UPDATEBYID(4,"修改学生信息"),
-	DELBYID(5,"删除学生信息")
+	DELBYID(5,"删除学生信息"),
+	LOGIN(6,"学生登录")
 	;
 	private int oper_type;
 	private String oper_desc;

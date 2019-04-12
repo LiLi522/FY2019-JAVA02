@@ -3,12 +3,14 @@ package com.lili.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.lili.common.ConstEnum;
 import com.lili.common.OperationEnum;
@@ -54,8 +56,8 @@ public class AdminServlet extends HttpServlet {
 		//设置编码格式
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=utf-8");
-		
-		
+		HttpSession session = request.getSession();
+		 
 		PrintWriter pw = response.getWriter();
 		//operation 1.登录 2.注册
 		String operation = request.getParameter("operation");
@@ -78,6 +80,8 @@ public class AdminServlet extends HttpServlet {
 				ServerResponse<Admin> serverresponse = admin.login(username, password);
 				
 				if (serverresponse.isSucess()) {
+					//登录成功往会话域中添加一个key=user
+					session.setAttribute("user", serverresponse.getData());
 					Cookie username_cookie = new Cookie("username",username);
 					Cookie password_cookie = new Cookie("password",password);
 					username_cookie.setMaxAge(7*24*3600);
@@ -98,6 +102,14 @@ public class AdminServlet extends HttpServlet {
 				pw.write(serverresponse.objToJson());
 				pw.flush();
 				pw.close();
+				
+			}else if (_op == OperationEnum.ADMIN_EXIT.getOperation_type()) {//退出操作
+				session.removeAttribute("user");
+				pw.write("退出成功");
+			}else if (_op == OperationEnum.ADMIN_LOGIN_NUM.getOperation_type()) {
+				ServletContext servletcontext = session.getServletContext();
+				Integer count = (Integer)servletcontext.getAttribute("total");
+				pw.write("在线人数：" + count);
 				
 			}
 		}catch (NumberFormatException e) {
