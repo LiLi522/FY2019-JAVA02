@@ -1,0 +1,5 @@
+shopping.iml
+/.idea
+.idea/
+target/
+src/main/resources/db.properties
