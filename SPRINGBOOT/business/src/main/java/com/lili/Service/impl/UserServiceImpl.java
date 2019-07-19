@@ -7,6 +7,7 @@ import com.lili.common.ServerResponse;
 import com.lili.dao.UserMapper;
 import com.lili.pojo.User;
 import com.lili.utils.MD5Utils;
+import com.lili.utils.RedisApi;
 import com.lili.utils.TokenCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    RedisApi redisApi;
 
     @Override
     public ServerResponse userRegister(User user) {
@@ -136,7 +140,10 @@ public class UserServiceImpl implements IUserService {
         //step3：返回结果
         //生成token
         String token = UUID.randomUUID().toString();
-        TokenCache.set("username:" + username, token);
+        //guava
+        //TokenCache.set("username:" + username, token);
+        //redis
+        redisApi.setex("username:" + username, 12*3600, token);
         return ServerResponse.serverResponseBySuccess(token);
     }
 
@@ -153,7 +160,9 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.serverResponseByError(ResponseCode.ERROR, "token不能为空");
         }
         //判断是否是修改自己的密码
-        String token = TokenCache.get("username:" + username);
+        //Guava : String token = TokenCache.get("username:" + username);
+        //redis
+        String token = redisApi.get("username:" + username);
         if (token == null) {
             return ServerResponse.serverResponseByError(ResponseCode.ERROR, "不能修改别人的密码或者token已经失效");
         }

@@ -27,9 +27,7 @@ public class CartController {
                                   HttpSession session) {
         User user = (User) session.getAttribute(Const.CONST_USER);
 
-        if (user == null) {
-            return ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN, "未登录");
-        }
+
 
         return cartService.addCart(user.getId(), productId, count);
     }

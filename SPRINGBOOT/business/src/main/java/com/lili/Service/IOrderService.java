@@ -1,7 +1,9 @@
 package com.lili.Service;
 
 import com.lili.common.ServerResponse;
+import com.lili.pojo.Order;
 
+import java.util.List;
 import java.util.Map;
 
 public interface IOrderService {
@@ -28,4 +30,9 @@ public interface IOrderService {
      * @return
      */
     public String callback(Map<String, String> requestParams);
+
+    /**
+     * 查询需要关闭的订单
+     */
+    List<Order> closeOrder(String closeOrderDate);
 }

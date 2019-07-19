@@ -59,4 +59,13 @@ public interface OrderMapper {
      * @return
      */
     int updateStatusAndTimeByOrderNo(@Param("order") Order order);
+
+    /**
+     * 根据订单创建时间查询订单
+     * @param time
+     * @return
+     */
+    List<Order> selectOrdersByCreateTime(@Param("time") String time);
+
+    Integer closeOrder(@Param("id") Integer id);
 }

@@ -28,14 +28,7 @@ public class ProductController {
      */
     @RequestMapping(value = "save.do")
     public ServerResponse addOrUpdate(Product product, HttpSession session) {
-        User user = (User) session.getAttribute(Const.CONST_USER);
 
-        if (user == null) {
-            return ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN, "未登录");
-        }
-        if (user.getRole() != RoleEnum.ROLE_ADMIN.getRole()) {
-            return ServerResponse.serverResponseByError(ResponseCode.ERROR, "权限不足");
-        }
         return productService.addOrUpdate(product);
     }
 
@@ -52,14 +45,7 @@ public class ProductController {
                                  @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                                  HttpSession session) {
-        User user = (User) session.getAttribute(Const.CONST_USER);
 
-        if (user == null) {
-            return ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN, "未登录");
-        }
-        if (user.getRole() != RoleEnum.ROLE_ADMIN.getRole()) {
-            return ServerResponse.serverResponseByError(ResponseCode.ERROR, "权限不足");
-        }
         return productService.search(productName, productId, pageNum, pageSize);
     }
 
@@ -70,14 +56,7 @@ public class ProductController {
      */
     @RequestMapping(value = "/{productId}")
     public ServerResponse detail(@PathVariable("productId") Integer productId, HttpSession session) {
-        User user = (User) session.getAttribute(Const.CONST_USER);
 
-        if (user == null) {
-            return ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN, "未登录");
-        }
-        if (user.getRole() != RoleEnum.ROLE_ADMIN.getRole()) {
-            return ServerResponse.serverResponseByError(ResponseCode.ERROR, "权限不足");
-        }
         return productService.detail(productId);
     }
 }

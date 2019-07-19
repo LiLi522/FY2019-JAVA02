@@ -33,9 +33,7 @@ public class OrderController {
     public ServerResponse createOrder(@PathVariable("shippingId") Integer shippingId, HttpSession session) {
         User user = (User) session.getAttribute(Const.CONST_USER);
 
-        if (user == null) {
-            return ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN, "未登录");
-        }
+
         return orderService.createOrder(user.getId(), shippingId);
     }
 
@@ -49,9 +47,6 @@ public class OrderController {
     public ServerResponse pay(@PathVariable("orderNo") Long orderNo, HttpSession session) {
         User user = (User) session.getAttribute(Const.CONST_USER);
 
-        if (user == null) {
-            return ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN, "未登录");
-        }
 
         return orderService.pay(user.getId(), orderNo);
 

@@ -172,6 +172,33 @@ public class OrderServiceImpl implements IOrderService {
         return "success";
     }
 
+    @Override
+    public List<Order> closeOrder(String closeOrderDate) {
+
+        List<Order> orders = orderMapper.selectOrdersByCreateTime(closeOrderDate);
+        if (orders == null || orders.size() == 0) {
+            return null;
+        }
+
+        for (Order order : orders) {
+            //查询订单明细，恢复商品库存
+            List<OrderItem> orderItemList = orderItemMapper.findOrderItemByOrderNo(order.getOrderNo());
+            for (OrderItem orderItem : orderItemList) {
+                ServerResponse<Product> serverResponse = productService.findProductByProductId(orderItem.getProductId());
+                if (!serverResponse.isSuccess()) { //商品不存在
+                    continue;
+                }
+                Product product = serverResponse.getData();
+                product.setStock(product.getStock() + orderItem.getQuantity());
+                productService.reduceSotck(product.getId(), product.getStock());
+            }
+            //关闭订单
+            orderMapper.closeOrder(order.getId());
+        }
+
+        return null;
+    }
+
 
     private static Log log = LogFactory.getLog(Main.class);
 
@@ -277,7 +304,7 @@ public class OrderServiceImpl implements IOrderService {
                 .setOperatorId(operatorId).setStoreId(storeId).setExtendParams(extendParams)
                 .setTimeoutExpress(timeoutExpress)
                 //支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
-                .setNotifyUrl("http://b4unqm.natappfree.cc/order/callback.do")
+                .setNotifyUrl("http://39.96.60.20:8080/order/callback.do")
                 .setGoodsDetailList(goodsDetailList);
 
         AlipayF2FPrecreateResult result = tradeService.tradePrecreate(builder);
