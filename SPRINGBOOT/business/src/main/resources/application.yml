@@ -1,0 +1,59 @@
+server:
+  port: 8080
+
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://39.96.60.20:3306/business?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: lili
+      password: LiLi522123@
+      max-active: 20
+      max-wait: 6000
+      min-idle: 1
+      test-on-borrow: true
+      test-on-return: true
+  thymeleaf:
+    mode: HTML
+  mvc:
+    static-path-pattern: /static/**
+mybatis:
+  mapper-locations: classpath*:com/lili/mapper/*Mapper.xml
+  config-location: classpath:mybatis-config.xml
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: countSql
+logging:
+  level:
+    com.lili.dao: debug
+
+business:
+  imageHost: http://img.xlxl.com:81/
+
+###配置redis连接池 1、port 2、bind 0.0.0.0 3、requirepass
+redis:
+  max:
+    total: 8
+    idle: 8
+  min:
+    idle: 2
+  test:
+    borrow: true
+    return: true
+  ip: 39.96.60.20
+  port: 5379
+  password: Xwj1848187734@
+  timeout: 2000
+
+order:
+  close:
+    timeout: 1
+
+
+lock:
+  timeout: 20000
+

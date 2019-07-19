@@ -25,9 +25,7 @@ public class ShippingController {
     public ServerResponse addAddress(Shipping shipping, HttpSession session) {
         User user = (User) session.getAttribute(Const.CONST_USER);
 
-        if (user == null) {
-            return ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN, "未登录");
-        }
+
         shipping.setUserId(user.getId());
         return shippingService.addAddress(shipping);
     }
